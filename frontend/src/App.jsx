@@ -16,12 +16,14 @@ import { useQuery } from "@tanstack/react-query";
 import LoadingSpinner from "./components/common/LoadingSpinner";
 import AiAsk from "./pages/AI Ask/AiAsk";
 
+const API_URL = import.meta.env.VITE_API_URL || "https://snapzy-backend.onrender.com";
+
 function App() {
     const { data: authUser, isLoading } = useQuery({
         queryKey: ["authUser"],
         queryFn: async () => {
             try {
-                const res = await fetch("/api/auth/me");
+                const res = await fetch(`${API_URL}/api/auth/me`);
                 const data = await res.json();
                 if (data.error) return null;
                 if (!res.ok) {

@@ -18,7 +18,7 @@ import { formatMemberSinceDate } from "../../utils/date";
 import useFollow from "../../hooks/useFollow";
 import useUpdateUserProfile from "../../hooks/useUpdateUserProfile";
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "https://your-backend.onrender.com";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "https://snapzy-backend.onrender.com";
 
 const ProfilePage = () => {
   const [coverImg, setCoverImg] = useState(null);

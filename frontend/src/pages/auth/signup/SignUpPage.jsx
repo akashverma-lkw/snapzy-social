@@ -6,7 +6,7 @@ import { FaUser } from "react-icons/fa";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 
-const API_URL = import.meta.env.VITE_API_URL || "https://your-backend.onrender.com";
+const API_URL = import.meta.env.VITE_API_URL || "https://snapzy-backend.onrender.com";
 
 const SignUpPage = () => {
   const [formData, setFormData] = useState({
