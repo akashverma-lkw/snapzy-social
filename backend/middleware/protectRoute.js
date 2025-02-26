@@ -3,7 +3,9 @@ import jwt from "jsonwebtoken";
 
 export const protectRoute = async (req, res, next) => {
 	try {
-		const token = req.cookies?.jwt; // Ensure cookie is properly accessed
+		// Ensure the token is properly accessed
+		const token = req.cookies?.jwt;
+
 		if (!token) {
 			return res.status(401).json({ error: "Unauthorized: No Token Provided" });
 		}
@@ -12,12 +14,14 @@ export const protectRoute = async (req, res, next) => {
 		try {
 			decoded = jwt.verify(token, process.env.JWT_SECRET);
 		} catch (err) {
+			console.error("JWT Verification Error:", err.message);
 			return res.status(401).json({ error: "Unauthorized: Token is invalid or expired" });
 		}
 
 		console.log("Decoded Token:", decoded); // Debugging
 
-		const user = await User.findById(decoded.id || decoded.userId).select("-password");
+		// Fetch user from DB and exclude password
+		const user = await User.findById(decoded.userId).select("-password");
 
 		if (!user) {
 			return res.status(404).json({ error: "User not found" });
