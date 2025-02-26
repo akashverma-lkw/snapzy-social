@@ -61,8 +61,8 @@ export const signup = async (req, res) => {
 export const login = async (req, res) => {
 	try {
 		const { username, password } = req.body;
-		
-		// Check if user exists first
+
+		// Check if user exists
 		const user = await User.findOne({ username });
 		if (!user) {
 			return res.status(400).json({ error: "Invalid username or password" });
@@ -77,8 +77,10 @@ export const login = async (req, res) => {
 		// Generate JWT token & set cookie
 		generateTokenAndSetCookie(user._id, res);
 
-		// ✅ Wrap user data inside { user: ... } for frontend compatibility
+		// ✅ Send token inside response for debugging
 		res.status(200).json({
+			message: "Login successful",
+			token: res.token, // Optional: Helps with debugging
 			user: {
 				_id: user._id,
 				fullName: user.fullName,
@@ -91,7 +93,7 @@ export const login = async (req, res) => {
 			},
 		});
 	} catch (error) {
-		console.log("Error in login controller:", error.message);
+		console.error("Error in login controller:", error);
 		res.status(500).json({ error: "Internal Server Error" });
 	}
 };
