@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { IoClose } from "react-icons/io5";
 
-const API_BASE_URL = "http://localhost:5002";
+const API_URL = import.meta.env.VITE_API_URL || "https://snapzy-backend.onrender.com";
 
 const AiAskModal = ({ isOpen, onClose }) => {
   const [question, setQuestion] = useState("");
@@ -32,7 +32,7 @@ const AiAskModal = ({ isOpen, onClose }) => {
     setError("");
 
     try {
-      const endpoint = new URL("/api/ai/ask", API_BASE_URL).toString();
+      const endpoint = new URL("/api/ai/ask", API_URL).toString();
       console.log("API Endpoint:", endpoint);
 
       const res = await fetch(endpoint, {
