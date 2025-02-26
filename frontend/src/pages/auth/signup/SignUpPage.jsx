@@ -1,10 +1,12 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { MdOutlineMail, MdPassword, MdDriveFileRenameOutline } from "react-icons/md";
 import { FaUser } from "react-icons/fa";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
+
+const API_URL = import.meta.env.VITE_API_URL || "https://your-backend.onrender.com";
 
 const SignUpPage = () => {
   const [formData, setFormData] = useState({
@@ -19,7 +21,7 @@ const SignUpPage = () => {
   const { mutate, isError, isPending, error } = useMutation({
     mutationFn: async ({ email, username, fullName, password }) => {
       try {
-        const res = await fetch("/api/auth/signup", {
+        const res =  await fetch(`${API_URL}/api/auth/signup`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -39,6 +41,7 @@ const SignUpPage = () => {
     onSuccess: () => {
       toast.success("Account created successfully");
       queryClient.invalidateQueries({ queryKey: ["authUser"] });
+      navigate("/homepage");
     },
   });
 

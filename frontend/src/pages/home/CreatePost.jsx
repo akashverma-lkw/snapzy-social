@@ -6,13 +6,25 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
 import EmojiPicker from "emoji-picker-react";
 
+const API_URL = import.meta.env.VITE_API_URL || "https://your-backend.onrender.com";
+
 const CreatePost = () => {
 	const [text, setText] = useState("");
 	const [img, setImg] = useState(null);
 	const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 	const imgRef = useRef(null);
 
-	const { data: authUser } = useQuery({ queryKey: ["authUser"] });
+	const { data: authUser } = useQuery({
+		queryKey: ["authUser"],
+		queryFn: async () => {
+			const res = await fetch(`${API_URL}/api/auth/user`, {
+				credentials: "include",
+			});
+			if (!res.ok) throw new Error("Failed to fetch user data");
+			return res.json();
+		},
+	});
+
 	const queryClient = useQueryClient();
 
 	const {
@@ -23,7 +35,7 @@ const CreatePost = () => {
 	} = useMutation({
 		mutationFn: async ({ text, img }) => {
 			try {
-				const res = await fetch("/api/posts/create", {
+				const res = await fetch(`${API_URL}/api/posts/create`, {
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json",
@@ -36,7 +48,7 @@ const CreatePost = () => {
 				}
 				return data;
 			} catch (error) {
-				throw new Error(error);
+				throw new Error(error.message);
 			}
 		},
 
@@ -74,7 +86,7 @@ const CreatePost = () => {
 		<div className="flex p-4 items-start gap-4 mt-4 border-b border-gray-700 w-full max-w-md mx-auto px-2 sm:px-4 relative">
 			<div className="avatar">
 				<div className="w-8 sm:w-10 rounded-full">
-					<img src={authUser.profileImg || "/avatar-placeholder.png"} alt="User Avatar" />
+					<img src={authUser?.profileImg || "/avatar-placeholder.png"} alt="User Avatar" />
 				</div>
 			</div>
 			<form className="flex flex-col gap-2 w-full" onSubmit={handleSubmit}>
@@ -121,7 +133,7 @@ const CreatePost = () => {
 					</div>
 				)}
 
-				{isError && <div className="text-red-500">{error.message}</div>}
+				{isError && <div className="text-red-500">{error?.message || "Failed to create post"}</div>}
 			</form>
 		</div>
 	);

@@ -18,6 +18,8 @@ import { formatMemberSinceDate } from "../../utils/date";
 import useFollow from "../../hooks/useFollow";
 import useUpdateUserProfile from "../../hooks/useUpdateUserProfile";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "https://your-backend.onrender.com";
+
 const ProfilePage = () => {
   const [coverImg, setCoverImg] = useState(null);
   const [profileImg, setProfileImg] = useState(null);
@@ -37,17 +39,15 @@ const ProfilePage = () => {
     refetch,
     isRefetching,
   } = useQuery({
-    queryKey: ["userProfile"],
+    queryKey: ["userProfile", username],
     queryFn: async () => {
       try {
-        const res = await fetch(`/api/users/profile/${username}`);
-        const data = await res.json();
-        if (!res.ok) {
-          throw new Error(data.error || "Something went wrong");
-        }
-        return data;
+        const res = await fetch(`${API_BASE_URL}/api/users/profile/${username}`);
+        if (!res.ok) throw new Error("Failed to fetch user profile");
+        return await res.json();
       } catch (error) {
-        throw new Error(error);
+        console.error(error);
+        return null;
       }
     },
   });

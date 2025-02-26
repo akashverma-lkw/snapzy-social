@@ -5,6 +5,8 @@ import { MdOutlineMail, MdPassword } from "react-icons/md";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { IoMdLogIn } from "react-icons/io";
 
+const API_URL = import.meta.env.VITE_API_URL || "https://your-backend.onrender.com";
+
 const LoginPage = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -16,26 +18,25 @@ const LoginPage = () => {
 
   const { mutate: loginMutation, isPending, isError, error } = useMutation({
     mutationFn: async ({ username, password }) => {
-      const res = await fetch("/api/auth/login", {
+      const res = await fetch(`${API_URL}/api/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ username, password }),
-        credentials: "include",
+        credentials: "include", // ✅ Ensure JWT is sent with requests
       });
 
       const data = await res.json();
-
       if (!res.ok) {
         throw new Error(data.error || "Invalid username or password");
       }
 
-      // ✅ Fix: Directly storing user data instead of `data.user`
       localStorage.setItem("authUser", JSON.stringify(data));
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["authUser"] });
+      navigate("/homepage"); // ✅ Redirect after successful login
     },
   });
 
@@ -51,19 +52,18 @@ const LoginPage = () => {
   return (
     <>
       <Helmet>
-        <title>Login Page | Snapzy </title>
+        <title>Login Page | Snapzy</title>
       </Helmet>
       <div className="h-screen w-screen flex flex-col md:flex-row px-6 py-10 md:px-18 md:py-20">
-        {/* Left Section - Headings and Description */}
+        {/* Left Section */}
         <div className="md:flex-1 bg-indigo-800 text-white rounded-l-lg flex flex-col justify-center items-start p-10 md:p-16 text-center md:text-left">
           <h1 className="text-4xl md:text-5xl text-slate-300 font-bold mb-3 md:mb-4">Welcome to Snapzy</h1>
           <p className="text-md md:text-lg text-slate-400 max-w-md">
-            Connect with friends 😍, share your moments 🤩, and experience social media like never before. <br />
-            Join us today 👻
+            Connect with friends 😍, share your moments 🤩, and experience social media like never before.
           </p>
           <button
             className="mt-4 px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold rounded-lg shadow-md hover:opacity-90 transition-all"
-            onClick={() => navigate('/')}
+            onClick={() => navigate("/")}
           >
             HomePage
           </button>
@@ -83,6 +83,7 @@ const LoginPage = () => {
                 name="username"
                 onChange={handleInputChange}
                 value={formData.username}
+                required
               />
             </label>
 
@@ -95,16 +96,16 @@ const LoginPage = () => {
                 name="password"
                 onChange={handleInputChange}
                 value={formData.password}
+                required
               />
             </label>
 
-            <button className="btn bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-lg">
+            <button className="btn bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-lg" disabled={isPending}>
               <div className="flex items-center justify-center gap-1">
-                {isPending ? "Loading..." : "Login"} <IoMdLogIn className="w-5 h-4" />
+                {isPending ? "Logging in..." : "Login"} <IoMdLogIn className="w-5 h-4" />
               </div>
             </button>
 
-            {/* ✅ Fix: Show Error Message if Exists */}
             {isError && <p className="text-red-500 text-sm">{error?.message || "An error occurred"}</p>}
 
             <div className="text-center">
