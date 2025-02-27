@@ -79,11 +79,6 @@ export const login = async (req, res) => {
 
 		// ✅ Send token inside response for debugging
 		res.status(200).status(200)
-		.cookie("jwt", res.token, {
-			httpOnly: true,
-			sameSite: "None",
-			secure: process.env.NODE_ENV === "production", // Render Pe Secure False Nahi Karna
-		})
 		.json({
 			message: "Login successful",
 			token: res.token, // Optional: Helps with debugging
