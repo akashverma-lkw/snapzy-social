@@ -29,10 +29,14 @@ const Posts = ({ feedType, username, userId }) => {
 		refetch,
 		isRefetching,
 	} = useQuery({
-		queryKey: ["posts"],
+		queryKey: ["posts", feedType, username],
 		queryFn: async () => {
 			try {
-				const res = await fetch(POST_ENDPOINT);
+				const res = await fetch(POST_ENDPOINT, {
+					method: "GET",
+					credentials: "include", // ✅ JWT Cookies Forwarding
+				});
+
 				const data = await res.json();
 
 				if (!res.ok) {
@@ -41,7 +45,8 @@ const Posts = ({ feedType, username, userId }) => {
 
 				return data;
 			} catch (error) {
-				throw new Error(error);
+				console.error("Fetching Posts Error:", error.message);
+				throw new Error(error.message);
 			}
 		},
 	});
@@ -72,4 +77,5 @@ const Posts = ({ feedType, username, userId }) => {
 		</>
 	);
 };
+
 export default Posts;
