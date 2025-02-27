@@ -16,12 +16,7 @@ export const generateTokenAndSetCookie = (userId, res) => {
 
 		// Store token in response for debugging
 		res.token = token;
-
-		res.clearCookie("jwt", {
-			httpOnly: true,
-			sameSite: "None",
-			secure: true,
-		});
+		
 	} catch (error) {
 		console.error("JWT Generation Error:", error);
 	}
