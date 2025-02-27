@@ -6,12 +6,12 @@ export const generateTokenAndSetCookie = (userId, res) => {
 			expiresIn: "15d",
 		});
 
-		// ✅ Ensure secure cookies & CORS settings for Render
+		// Ensure secure cookies & CORS settings for Render
 		res.cookie("jwt", token, {
 			maxAge: 15 * 24 * 60 * 60 * 1000, // 15 days
-			httpOnly: true, // ✅ Prevents XSS attacks
-			sameSite: "None", // ✅ Allows cross-origin requests
-			secure: true, // ✅ Required for Render (HTTPS)
+			httpOnly: true, // Prevents XSS attacks
+			sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax", // allows Cross-Origin 
+			secure: process.env.NODE_ENV === "production", // True on deployment Required for Render (HTTPS)
 		});
 
 		// Store token in response for debugging

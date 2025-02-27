@@ -33,7 +33,7 @@ const allowedOrigins = [process.env.FRONTEND_URL || "http://localhost:3000"];
 app.use(
   cors({
     origin: allowedOrigins,
-    credentials: true,
+    credentials: true, // allows cookies to be passed
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
