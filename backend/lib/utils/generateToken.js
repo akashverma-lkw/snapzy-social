@@ -10,7 +10,7 @@ export const generateTokenAndSetCookie = (userId, res) => {
 		res.cookie("jwt", token, {
 			maxAge: 15 * 24 * 60 * 60 * 1000, // 15 days
 			httpOnly: true, // Prevents XSS attacks
-			sameSite: "lax", // Cross-Origin ke liye Fix
+			sameSite: "none", // Cross-Origin ke liye Fix
 			secure: true, // True on deployment Required for Render (HTTPS)
 		});
 
