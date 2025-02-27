@@ -1,6 +1,3 @@
-import axios from "axios";
-axios.defaults.withCredentials = true;
-
 import { Navigate, Route, Routes, Link } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 
