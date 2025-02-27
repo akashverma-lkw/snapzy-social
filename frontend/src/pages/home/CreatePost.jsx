@@ -41,6 +41,7 @@ const CreatePost = () => {
 						"Content-Type": "application/json",
 					},
 					body: JSON.stringify({ text, img }),
+					credentials: "include", // ✅ Ensure JWT is sent with requests
 				});
 				const data = await res.json();
 				if (!res.ok) {

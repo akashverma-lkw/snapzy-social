@@ -32,6 +32,7 @@ const NotificationPage = () => {
 			try {
 				const res = await fetch(`${API_URL}/api/notifications`, {
 					method: "DELETE",
+					credentials: "include", // ✅ Ensure JWT is sent with requests
 				});
 				const data = await res.json();
 
