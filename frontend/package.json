@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@tanstack/react-query": "^5.29.2",
+    "axios": "^1.8.1",
     "emoji-picker-react": "^4.12.0",
     "framer-motion": "^12.4.7",
     "react": "^18.3.1",
