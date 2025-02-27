@@ -29,6 +29,7 @@ const Post = ({ post }) => {
 			try {
 				const res = await fetch(`${API_URL}/api/posts/${post._id}`, {
 					method: "DELETE",
+					credentials: "include",
 				});
 				const data = await res.json();
 
@@ -51,6 +52,7 @@ const Post = ({ post }) => {
 			try {
 				const res = await fetch(`${API_URL}/api/posts/like/${post._id}`, {
 					method: "POST",
+					credentials: "include",
 				});
 				const data = await res.json();
 				if (!res.ok) {
@@ -89,6 +91,7 @@ const Post = ({ post }) => {
 						"Content-Type": "application/json",
 					},
 					body: JSON.stringify({ text: comment }),
+					credentials: "include",
 				});
 				const data = await res.json();
 
