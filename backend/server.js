@@ -30,6 +30,7 @@ app.use(cookieParser());
 // Configure CORS dynamically based on environment
 const allowedOrigins = [process.env.FRONTEND_URL || "http://localhost:3000"];
 
+app.set("trust proxy", 1);
 app.use(
   cors({
     origin: allowedOrigins,
