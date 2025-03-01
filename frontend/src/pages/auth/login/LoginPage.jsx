@@ -34,7 +34,8 @@ const LoginPage = () => {
       return data; // 🔥 Return data so it will be available in onSuccess
      
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
+      console.log("Login Success ✅:", data);
       queryClient.invalidateQueries({ queryKey: ["authUser"] });
       localStorage.setItem("authUser", JSON.stringify(data.token)); // ✅ Store token here
       navigate("/homepage"); // ✅ Redirect after successful login
