@@ -28,7 +28,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // Configure CORS dynamically based on environment
-const allowedOrigins = [process.env.FRONTEND_URL || "http://localhost:3000"];
+const allowedOrigins = [process.env.FRONTEND_URL || "https://snapzy-b1zz.onrender.com"];
 
 app.set("trust proxy", 1);
 app.use(
