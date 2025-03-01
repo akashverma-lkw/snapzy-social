@@ -32,10 +32,11 @@ const LoginPage = () => {
         throw new Error(data.error || "Invalid username or password");
       }
 
-      localStorage.setItem("authUser", JSON.stringify(data));
+     
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["authUser"] });
+      localStorage.setItem("authUser", JSON.stringify(data));
       navigate("/homepage"); // ✅ Redirect after successful login
     },
   });
