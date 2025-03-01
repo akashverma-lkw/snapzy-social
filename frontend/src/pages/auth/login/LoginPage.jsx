@@ -31,12 +31,12 @@ const LoginPage = () => {
       if (!res.ok) {
         throw new Error(data.error || "Invalid username or password");
       }
-
+      return data; // 🔥 Return data so it will be available in onSuccess
      
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["authUser"] });
-      localStorage.setItem("authUser", JSON.stringify(data));
+      localStorage.setItem("authUser", JSON.stringify(data.token)); // ✅ Store token here
       navigate("/homepage"); // ✅ Redirect after successful login
     },
   });
