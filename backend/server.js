@@ -25,7 +25,7 @@ const PORT = process.env.PORT || 5000;
 
 
 // Configure CORS dynamically based on environment
-const allowedOrigins = [process.env.FRONTEND_URL || "https://snapzy-b1zz.onrender.com"];
+const allowedOrigins = [process.env.FRONTEND_URL, "https://snapzy-b1zz.onrender.com"];
 
 app.set("trust proxy", 1);
 app.use(
