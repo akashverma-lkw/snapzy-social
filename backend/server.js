@@ -42,7 +42,8 @@ app.use(
     },
     credentials: true, // JWT cookies ko pass karne ke liye
     methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+    allowedHeaders: ["Content-Type", "Authorization", "Origin", "Accept", "X-Request-With", "Access-Control-Allow-Origin"],
+    credentials: true,
   })
 );
 
