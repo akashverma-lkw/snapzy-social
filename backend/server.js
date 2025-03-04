@@ -22,45 +22,52 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// ✅ Trust proxy must be set before cookie-parser & CORS
+app.set("trust proxy", 1);
 
-// Configure CORS dynamically based on environment
+// ✅ Middlewares (in correct order)
+app.use(cookieParser());
+app.use(express.json({ limit: "5mb" }));
+app.use(express.urlencoded({ extended: true }));
+
+// ✅ CORS setup (before routes)
 app.use(
   cors({
     origin: process.env.FRONTEND_URL,
-    credentials: true, // JWT cookies ko pass karne ke liye
+    credentials: true, // ✅ JWT cookies ko pass karne ke liye
     methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization", "Origin", "Accept", "X-Request-With", "Access-Control-Allow-Origin"],
+    allowedHeaders: [
+      "Content-Type",
+      "Authorization",
+      "Origin",
+      "Accept",
+      "X-Request-With",
+      "Access-Control-Allow-Origin",
+    ],
   })
 );
 
-// Middleware
-app.use(express.json({ limit: "5mb" }));
-app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
-
-app.set("trust proxy", true);
-
-// Cloudinary Configuration
+// ✅ Cloudinary Configuration
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-// API Routes
+// ✅ API Routes (after middlewares)
 app.use("/api/ai", aiRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/notifications", notificationRoutes);
 
-// Connect to DB & Start Server
+// ✅ Connect to DB & Start Server
 connectMongoDB()
   .then(() => {
     app.listen(PORT, () => {
-      console.log(`Server running on port ${PORT}`);
+      console.log(`🚀 Server running on port ${PORT}`);
     });
   })
   .catch((err) => {
-    console.error("MongoDB Connection Error:", err);
+    console.error("❌ MongoDB Connection Error:", err);
   });
