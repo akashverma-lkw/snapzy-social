@@ -1,18 +1,16 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
-const API_URL = import.meta.env.VITE_API_URL;
-
 export default defineConfig({
 	plugins: [react()],
 	server: {
-		port: 3000, // ✅ Ensures frontend runs on port 3000
+		port: 3000, // ✅ Frontend will run on port 3000
 		proxy: {
 			"/api": {
-				target: import.meta.env.API_URL, // ✅ Ensure this matches your backend port
+				target: import.meta.env.VITE_API_URL, // ✅ Correct way to access VITE env variables
 				changeOrigin: true,
-				secure: ture, // Optional: use `false` if you have HTTPS issues in development
-				ws: true, // Optional: handles WebSocket connections if needed
+				secure: true, // 🔥 Secure https request
+				ws: true,
 			},
 		},
 	},
