@@ -23,23 +23,12 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 
-
-// Configure CORS dynamically based on environment
-
-const allowedOrigins = process.env.FRONTEND_URL?.split(",") || [];
-
-
 app.set("trust proxy", 1);
 
+// Configure CORS dynamically based on environment
 app.use(
   cors({
-    origin: function (origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
+    origin: process.env.FRONTEND_URL || "https://snapzy-b1zz.onrender.com",
     credentials: true, // JWT cookies ko pass karne ke liye
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization", "Origin", "Accept", "X-Request-With", "Access-Control-Allow-Origin"],
