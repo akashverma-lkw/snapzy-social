@@ -27,7 +27,7 @@ const Post = ({ post }) => {
 	const { mutate: deletePost, isPending: isDeleting } = useMutation({
 		mutationFn: async () => {
 			try {
-				const res = await fetch(`${API_URL}/api/posts/${post._id}`, {
+				const res = await fetch(`${API_URL}/api/posts/${post?._id}`, {
 					method: "DELETE",
 					credentials: "include",
 				});
@@ -50,7 +50,7 @@ const Post = ({ post }) => {
 	const { mutate: likePost, isPending: isLiking } = useMutation({
 		mutationFn: async () => {
 			try {
-				const res = await fetch(`${API_URL}/api/posts/like/${post._id}`, {
+				const res = await fetch(`${API_URL}/api/posts/like/${post?._id}`, {
 					method: "POST",
 					credentials: "include",
 				});
@@ -70,7 +70,7 @@ const Post = ({ post }) => {
 			// instead, update the cache directly for that post
 			queryClient.setQueryData(["posts"], (oldData) => {
 				return oldData.map((p) => {
-					if (p._id === post._id) {
+					if (p?._id === post?._id) {
 						return { ...p, likes: updatedLikes };
 					}
 					return p;
@@ -132,17 +132,17 @@ const Post = ({ post }) => {
 		<>
 			<div className='flex gap-2 mr-32 items-start p-4 border-b border-gray-700 w-full max-w-2xl mx-auto'>
 				<div className='avatar'>
-					<Link to={`/profile/${postOwner.username}`} className='w-8 rounded-full overflow-hidden'>
-						<img src={postOwner.profileImg || "/avatar-placeholder.png"} />
+					<Link to={`/profile/${postOwner?.username}`} className='w-8 rounded-full overflow-hidden'>
+						<img src={postOwner?.profileImg || "/avatar-placeholder.png"} />
 					</Link>
 				</div>
 				<div className='flex flex-col flex-1'>
 					<div className='flex gap-2 items-center'>
-						<Link to={`/profile/${postOwner.username}`} className='font-bold'>
-							{postOwner.fullName}
+						<Link to={`/profile/${postOwner?.username}`} className='font-bold'>
+							{postOwner?.fullName}
 						</Link>
 						<span className='text-gray-700 flex gap-1 text-sm'>
-							<Link to={`/profile/${postOwner.username}`}>@{postOwner.username}</Link>
+							<Link to={`/profile/${postOwner?.username}`}>@{postOwner?.username}</Link>
 							<span>·</span>
 							<span>{formattedDate}</span>
 						</span>
