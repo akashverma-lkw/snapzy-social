@@ -32,13 +32,16 @@ const LoginPage = () => {
         throw new Error(data.error || "Invalid username or password");
       }
       return data; // 🔥 Return data so it will be available in onSuccess
-     
+
     },
     onSuccess: (data) => {
-      console.log("Login Success ✅:", data);
+      console.log("Login Success ✅:", data); // Check yeh console aa raha hai?
+      console.log("Token:", data.token); // Yeh token aa raha hai ya undefined?
       queryClient.invalidateQueries({ queryKey: ["authUser"] });
-      localStorage.setItem("authUser", JSON.stringify(data.token)); // ✅ Store token here
-      navigate("/homepage"); // ✅ Redirect after successful login
+      if (data.token) {
+        localStorage.setItem("authUser", JSON.stringify(data.token));
+      }
+      navigate("/homepage");
     },
   });
 
