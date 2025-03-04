@@ -28,7 +28,7 @@ app.set("trust proxy", 1);
 // Configure CORS dynamically based on environment
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL || "https://snapzy-b1zz.onrender.com",
+    origin: process.env.FRONTEND_URL,
     credentials: true, // JWT cookies ko pass karne ke liye
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization", "Origin", "Accept", "X-Request-With", "Access-Control-Allow-Origin"],
