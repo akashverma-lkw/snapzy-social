@@ -3,7 +3,7 @@ import PostSkeleton from "../skeletons/PostSkeleton";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 
-const API_URL = import.meta.env.VITE_API_URL || "https://snapzy-backend.onrender.com";
+const API_URL = [import.meta.env.VITE_API_URL, "https://snapzy-backend.onrender.com"];
 
 const Posts = ({ feedType, username, userId }) => {
 	const getPostEndpoint = () => {
@@ -29,7 +29,7 @@ const Posts = ({ feedType, username, userId }) => {
 		refetch,
 		isRefetching,
 	} = useQuery({
-		queryKey: ["posts"],
+		queryKey: ["posts", feedType, username, userId],
 		queryFn: async () => {
 			try {
 				const res = await fetch(POST_ENDPOINT, {
