@@ -22,15 +22,15 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// ✅ Trust proxy must be set before cookie-parser & CORS
+// Trust proxy must be set before cookie-parser & CORS
 app.set("trust proxy", 1);
 
-// ✅ Middlewares (in correct order)
+// Middlewares (in correct order)
 app.use(cookieParser());
 app.use(express.json({ limit: "5mb" }));
 app.use(express.urlencoded({ extended: true }));
 
-// ✅ CORS setup (before routes)
+// CORS setup (before routes)
 app.use(
   cors({
     origin: process.env.FRONTEND_URL,
@@ -47,21 +47,21 @@ app.use(
   })
 );
 
-// ✅ Cloudinary Configuration
+// Cloudinary Configuration
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-// ✅ API Routes (after middlewares)
+// API Routes (after middlewares)
 app.use("/api/ai", aiRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/notifications", notificationRoutes);
 
-// ✅ Connect to DB & Start Server
+// Connect to DB & Start Server
 connectMongoDB()
   .then(() => {
     app.listen(PORT, () => {
