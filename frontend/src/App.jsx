@@ -10,6 +10,7 @@ import FrontPage from "./pages/FrontPage/FrontPage";
 
 import Navbar from "./components/common/Navbar";
 import RightPanel from "./components/common/RightPanel";
+import LeftPanel from "./components/common/LeftPanel";
 
 import { Toaster } from "react-hot-toast";
 import { useQuery } from "@tanstack/react-query";
@@ -51,6 +52,7 @@ function App() {
     return (
         <div className='flex max-w-6xl mx-auto'>
             {authUser && <Navbar />}
+            {authUser && <LeftPanel />}
             <HelmetProvider>
             <Routes>
                 <Route path='/' element={<FrontPage />} />
