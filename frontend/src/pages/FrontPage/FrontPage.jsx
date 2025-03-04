@@ -2,9 +2,31 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Helmet } from "react-helmet-async";
+import { useEffect, useState } from "react";
+
+const news = [
+  "🚀 Breaking News: Snapzy is now live with AI integration!",
+  "💡 Tech Update: Gemini API is trending in 2025",
+  "🎯 New Feature: Tic Tac Toe Mini Game Added!",
+  "🔥 Milestone: SignUp Right Now to explore things!",
+  "✨ Stay Tuned: More Exciting Features Coming Soon!",
+  "📸 Snapzy introduces Image Upload Feature!",
+  "💬 Snapzy's Comment and Like System is now live!",
+  "🧠 Ask AI Feature powered by Gemini API is ready to assist!",
+  "🎨 Profile Customization Feature Coming Soon!",
+  "📊 Snapzy's User Engagement at its Peak!"
+];
 
 const FrontPage = () => {
     const navigate = useNavigate();
+    const [currentNews, setCurrentNews] = useState(0);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setCurrentNews((prev) => (prev + 1) % news.length);
+        }, 2000);
+        return () => clearInterval(interval);
+    }, []);
 
     return (
         <>
@@ -12,22 +34,22 @@ const FrontPage = () => {
         <title>Snapzy || a social media platform ...</title>
       </Helmet>
         <div className="flex flex-col items-center justify-center min-h-screen w-full text-center px-6 relative text-white">
-            {/* Snapzy Title for Mobile */}
-            <motion.div
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-                className="absolute inset-0 top-6 flex justify-center md:hidden text-4xl font-extrabold text-pink-500 drop-shadow-lg tracking-wide z-10"
+            {/* Snapzy Title with Gradient */}
+            <motion.h1
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.6 }}
+                className="text-5xl sm:text-6xl font-extrabold bg-gradient-to-r from-pink-400 via-red-500 to-purple-500 bg-clip-text text-transparent py-4 drop-shadow-lg"
             >
                 Snapzy
-            </motion.div>
+            </motion.h1>
 
             {/* Animated Gradient Heading */}
             <motion.h1
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.6 }}
-                className="text-4xl sm:text-5xl md:text-6xl font-extrabold bg-gradient-to-r from-pink-400 via-red-500 to-purple-500 bg-clip-text text-transparent py-4 mt-20 md:mt-0 drop-shadow-lg"
+                className="text-2xl sm:text-2xl md:text-4xl font-extrabold bg-gradient-to-r from-pink-400 via-red-500 to-purple-500 bg-clip-text text-transparent py-4 mt-2 md:mt-0 drop-shadow-lg"
             >
                 Discover, Connect & Share
             </motion.h1>
@@ -43,8 +65,28 @@ const FrontPage = () => {
                 Join Snapzy and <strong>explore boundless opportunities</strong> like never before.
             </motion.p>
 
+            {/* News Section with Auto Scroll */}
+            <div className="mt-8 w-full max-w-3xl bg-gray-900 rounded-lg p-6 shadow-lg border border-gray-700 overflow-hidden">
+                <h2 className="text-2xl font-bold bg-gradient-to-r from-pink-400 to-purple-500 bg-clip-text text-transparent text-center mb-4 animate-pulse tracking-wide">
+                    📰 Latest News
+                </h2>
+                <div className="overflow-hidden h-18 flex items-center justify-center">
+                    {news.map((item, index) => (
+                        <motion.div
+                            key={index}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={index === currentNews ? { opacity: 1, y: 0 } : { opacity: 0, y: -20 }}
+                            transition={{ duration: 0.4 }}
+                            className={`text-lg text-gray-300 text-center ${index === currentNews ? "block" : "hidden"}`}
+                        >
+                            {item}
+                        </motion.div>
+                    ))}
+                </div>
+            </div>
+
             {/* Two-Column Layout */}
-            <div className="mt-10 flex flex-col md:flex-row items-center justify-center w-full max-w-6xl gap-10 px-6 md:px-10">
+            <div className="mt-7 flex flex-col md:flex-row items-center justify-center w-full max-w-6xl gap-10 px-6 md:px-10">
                 {/* Left Side - Large Heading */}
                 <motion.div
                     initial={{ opacity: 0, x: -50 }}
