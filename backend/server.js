@@ -23,8 +23,6 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 
-app.set("trust proxy", 1);
-
 // Configure CORS dynamically based on environment
 app.use(
   cors({
@@ -35,7 +33,12 @@ app.use(
   })
 );
 
+// Middleware
+app.use(express.json({ limit: "5mb" }));
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
+app.set("trust proxy", true);
 
 // Cloudinary Configuration
 cloudinary.config({
@@ -50,11 +53,6 @@ app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/notifications", notificationRoutes);
-
-// Middleware
-app.use(express.json({ limit: "5mb" }));
-app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
 
 // Connect to DB & Start Server
 connectMongoDB()
