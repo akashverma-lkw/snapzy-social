@@ -35,10 +35,7 @@ app.use(
   })
 );
 
-// Middleware
-app.use(express.json({ limit: "5mb" }));
-app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
+
 
 // Cloudinary Configuration
 cloudinary.config({
@@ -53,6 +50,11 @@ app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/notifications", notificationRoutes);
+
+// Middleware
+app.use(express.json({ limit: "5mb" }));
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 // Connect to DB & Start Server
 connectMongoDB()
