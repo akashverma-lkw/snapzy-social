@@ -8,7 +8,8 @@ export const generateTokenAndSetCookie = (userId, res) => {
 
 		// Ensure secure cookies & CORS settings for Render
 		res.cookie("jwt", token, {
-			maxAge: 15 * 24 * 60 * 60 * 1000, // 15 days
+			// maxAge: 15 * 24 * 60 * 60 * 1000, // 15 days
+			maxAge: 1 * 60 * 1000, // 1 min expire
 			httpOnly: true, // Prevents XSS attacks
 			sameSite: "none", // Cross-Origin ke liye Fix
 			secure: true, // True on deployment Required for Render (HTTPS)
