@@ -6,7 +6,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
 import EmojiPicker from "emoji-picker-react";
 
-const API_URL = import.meta.env.VITE_API_URL || "https://snapzy-backend.onrender.com";
+const API_URL = import.meta.env.VITE_API_URL;
 
 const CreatePost = () => {
 	const [text, setText] = useState("");

@@ -5,7 +5,7 @@ import { MdOutlineMail, MdPassword } from "react-icons/md";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { IoMdLogIn } from "react-icons/io";
 
-const API_URL = import.meta.env.VITE_API_URL || "https://snapzy-backend.onrender.com";
+const API_URL = import.meta.env.VITE_API_URL;
 
 const LoginPage = () => {
   const navigate = useNavigate();
