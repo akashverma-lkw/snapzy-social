@@ -68,10 +68,9 @@ export const login = async (req, res) => {
 			return res.status(400).json({ error: "Invalid username or password" });
 		}
 
-		generateTokenAndSetCookie(user._id, res);
+		generateTokenAndSetCookie(res, user._id);
 
 		res.status(200).json({
-			token: res.token,
 			_id: user._id,
 			fullName: user.fullName,
 			username: user.username,
@@ -80,6 +79,7 @@ export const login = async (req, res) => {
 			following: user.following,
 			profileImg: user.profileImg,
 			coverImg: user.coverImg,
+			token: res.token,
 		});
 	} catch (error) {
 		console.log("Error in login controller", error.message);
