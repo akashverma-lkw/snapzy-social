@@ -3,7 +3,7 @@ import asyncHandler from 'express-async-handler';
 import User from '../models/user.model.js';
 
 // Protect Routes Middleware
-const protect = asyncHandler(async (req, res, next) => {
+export const protectRoute = asyncHandler(async (req, res, next) => {
   let token;
 
   if (req.cookies.jwt) {
@@ -27,5 +27,3 @@ const protect = asyncHandler(async (req, res, next) => {
     throw new Error('Not authorized, no token');
   }
 });
-
-export { protect};
