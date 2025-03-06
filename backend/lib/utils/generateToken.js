@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const generateToken = (res, id) => {
+export const generateTokenAndSetCookie = (res, id) => {
   const token = jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: '15d', // Token expiry time
   });
@@ -14,5 +14,3 @@ const generateToken = (res, id) => {
     sameSite: 'strict', // CSRF protection
   });
 };
-
-export default generateToken;
