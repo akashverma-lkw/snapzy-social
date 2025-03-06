@@ -4,6 +4,7 @@ import { Helmet } from "react-helmet-async";
 import { MdOutlineMail, MdPassword } from "react-icons/md";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { IoMdLogIn } from "react-icons/io";
+import { motion } from "framer-motion";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -24,19 +25,18 @@ const LoginPage = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ username, password }),
-        credentials: "include", // ✅ Ensure JWT is sent with requests
+        credentials: "include",
       });
 
       const data = await res.json();
       if (!res.ok) {
         throw new Error(data.error || "Invalid username or password");
       }
-      return data; // 🔥 Return data so it will be available in onSuccess
-
+      return data;
     },
     onSuccess: (data) => {
-      console.log("Login Success ✅:", data); // Check yeh console aa raha hai?
-      console.log("Token:", data.token); // Yeh token aa raha hai ya undefined?
+      console.log("Login Success ✅:", data);
+      console.log("Token:", data.token);
       queryClient.invalidateQueries({ queryKey: ["authUser"] });
       if (data.token) {
         localStorage.setItem("authUser", JSON.stringify(data.token));
@@ -59,31 +59,41 @@ const LoginPage = () => {
       <Helmet>
         <title>Login Page | Snapzy</title>
       </Helmet>
-      <div className="h-screen w-screen flex flex-col md:flex-row px-6 py-10 md:px-18 md:py-20">
+      <div className="h-screen w-screen flex flex-col md:flex-row px-6 py-10 md:px-18 md:py-20 bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white">
         {/* Left Section */}
-        <div className="md:flex-1 bg-indigo-800 text-white rounded-l-lg flex flex-col justify-center items-start p-10 md:p-16 text-center md:text-left">
-          <h1 className="text-4xl md:text-5xl text-slate-300 font-bold mb-3 md:mb-4">Welcome to Snapzy</h1>
-          <p className="text-md md:text-lg text-slate-400 max-w-md">
+        <motion.div
+          initial={{ opacity: 0, x: -50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 1 }}
+          className="md:flex-1 bg-gradient-to-r from-indigo-800 to-purple-800 text-white rounded-l-lg flex flex-col justify-center items-start p-10 md:p-16 text-center md:text-left shadow-2xl"
+        >
+          <h1 className="text-5xl md:text-5xl font-extrabold mb-3 md:mb-4 animate-pulse">Welcome to Snapzy</h1>
+          <p className="text-md md:text-lg text-slate-300 max-w-md leading-relaxed">
             Connect with friends 😍, share your moments 🤩, and experience social media like never before.
           </p>
           <button
-            className="mt-4 px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold rounded-lg shadow-md hover:opacity-90 transition-all"
+            className="mt-6 px-8 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold rounded-lg shadow-lg hover:scale-105 transition-transform"
             onClick={() => navigate("/")}
           >
             HomePage
           </button>
-        </div>
+        </motion.div>
 
         {/* Right Section - Login Form */}
-        <div className="md:flex-1 flex justify-center items-center rounded-r-lg bg-gray-900 mt-6 md:mt-0">
-          <form className="flex flex-col gap-5 bg-gray-800 p-6 md:p-10 rounded-xl shadow-lg w-full max-w-[380px]" onSubmit={handleSubmit}>
-            <h2 className="text-2xl md:text-3xl font-bold text-white text-center">Login</h2>
+        <motion.div
+          initial={{ opacity: 0, x: 50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 1 }}
+          className="md:flex-1 flex justify-center items-center rounded-r-lg bg-black bg-opacity-60 backdrop-blur-lg shadow-2xl mt-6 md:mt-0"
+        >
+          <form className="flex flex-col gap-6 bg-gray-800 p-8 md:p-12 rounded-xl shadow-xl w-full max-w-[400px]" onSubmit={handleSubmit}>
+            <h2 className="text-3xl md:text-4xl font-bold text-center mb-6">Login</h2>
 
-            <label className="input input-bordered flex items-center gap-2 bg-gray-700 text-white rounded-lg p-3 w-full">
-              <MdOutlineMail className="text-xl" />
+            <label className="input flex items-center gap-3 bg-gray-700 text-white rounded-lg p-4 w-full">
+              <MdOutlineMail className="text-2xl text-indigo-400" />
               <input
                 type="text"
-                className="grow bg-transparent outline-none"
+                className="grow bg-transparent outline-none placeholder-gray-400"
                 placeholder="Username"
                 name="username"
                 onChange={handleInputChange}
@@ -92,11 +102,11 @@ const LoginPage = () => {
               />
             </label>
 
-            <label className="input input-bordered flex items-center gap-2 bg-gray-700 text-white rounded-lg p-3 w-full">
-              <MdPassword className="text-xl" />
+            <label className="input flex items-center gap-3 bg-gray-700 text-white rounded-lg p-4 w-full">
+              <MdPassword className="text-2xl text-indigo-400" />
               <input
                 type="password"
-                className="grow bg-transparent outline-none"
+                className="grow bg-transparent outline-none placeholder-gray-400"
                 placeholder="Password"
                 name="password"
                 onChange={handleInputChange}
@@ -105,24 +115,32 @@ const LoginPage = () => {
               />
             </label>
 
-            <button className="btn bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-lg" disabled={isPending}>
-              <div className="flex items-center justify-center gap-1">
-                {isPending ? "Logging in..." : "Login"} <IoMdLogIn className="w-5 h-4" />
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-lg shadow-lg"
+              disabled={isPending}
+            >
+              <div className="flex items-center justify-center gap-2">
+                {isPending ? "Logging in..." : "Login"} <IoMdLogIn className="w-5 h-5" />
               </div>
-            </button>
+            </motion.button>
 
-            {isError && <p className="text-red-500 text-sm">{error?.message || "An error occurred"}</p>}
+            {isError && <p className="text-red-500 text-center">{error?.message || "An error occurred"}</p>}
 
             <div className="text-center">
-              <p className="text-white">Don't have an account?</p>
+              <p>Don't have an account?</p>
               <Link to="/signup">
-                <button className="btn bg-transparent border-white text-white hover:bg-white hover:text-black py-3 rounded-lg w-full mt-2">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  className="mt-3 border border-indigo-400 text-indigo-400 hover:bg-indigo-400 hover:text-black py-3 rounded-lg w-full transition-all"
+                >
                   Sign Up
-                </button>
+                </motion.button>
               </Link>
             </div>
           </form>
-        </div>
+        </motion.div>
       </div>
     </>
   );
