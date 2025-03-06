@@ -1,19 +1,23 @@
-import jwt from 'jsonwebtoken';
-import dotenv from 'dotenv';
-
-dotenv.config();
+import jwt from "jsonwebtoken";
 
 export const generateTokenAndSetCookie = (userId, res) => {
-  const token = jwt.sign({ userId }, process.env.JWT_SECRET, {
-    expiresIn: '15d', // Token expiry time
-  });
+	try {
+		const token = jwt.sign({ userId }, process.env.JWT_SECRET, {
+			expiresIn: "15d",
+		});
 
-  res.cookie('jwt', token, {
-    maxAge: 15 * 24 * 60 * 60 * 1000, // 15 days
-    httpOnly: true, // Prevent client-side access
-    secure: process.env.NODE_ENV === 'production', // Use secure cookies in production
-    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict', 
-  });
+		// Ensure secure cookies & CORS settings for Render
+		res.cookie("jwt", token, {
+			maxAge: 15 * 24 * 60 * 60 * 1000, // 15 days
+			httpOnly: true, // Prevents XSS attacks
+			sameSite: "none", // Cross-Origin ke liye Fix
+			secure: process.env.NODE_ENV !== "production", // True on deployment Required for Render (HTTPS)
+		});
 
-  res.token = token;
+		// Store token in response for debugging
+		res.token = token;
+		
+	} catch (error) {
+		console.error("JWT Generation Error:", error);
+	}
 };

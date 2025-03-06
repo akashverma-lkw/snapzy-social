@@ -1,29 +1,29 @@
-import jwt from 'jsonwebtoken';
-import asyncHandler from 'express-async-handler';
-import User from '../models/user.model.js';
+import User from "../models/user.model.js";
+import jwt from "jsonwebtoken";
 
-// Protect Routes Middleware
-export const protectRoute = asyncHandler(async (req, res, next) => {
-  let token;
+export const protectRoute = async (req, res, next) => {
+	try {
+		const token = req.cookies?.jwt;
+		if (!token) {
+			return res.status(401).json({ error: "Unauthorized: No Token Provided" });
+		}
 
-  if (req.cookies.jwt) {
-    try {
-      token = req.cookies.jwt;
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+		const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-      req.user = await User.findById(decoded.id).select('-password');
+		if (!decoded) {
+			return res.status(401).json({ error: "Unauthorized: Invalid Token" });
+		}
 
-      if (!req.user) {
-        res.status(401);
-        throw new Error('User not found');
-      }
-      next();
-    } catch (error) {
-      res.status(401);
-      throw new Error('Not authorized, token failed');
-    }
-  } else {
-    res.status(401);
-    throw new Error('Not authorized, no token');
-  }
-});
+		const user = await User.findById(decoded.userId).select("-password");
+
+		if (!user) {
+			return res.status(404).json({ error: "User not found" });
+		}
+
+		req.user = user;
+		next();
+	} catch (err) {
+		console.log("Error in protectRoute middleware", err.message);
+		return res.status(500).json({ error: "Internal Server Error" });
+	}
+};
