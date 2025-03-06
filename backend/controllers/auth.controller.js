@@ -71,7 +71,6 @@ export const login = async (req, res) => {
 		generateTokenAndSetCookie(user._id, res);
 
 		res.status(200).json({
-			token: res.token,
 			_id: user._id,
 			fullName: user.fullName,
 			username: user.username,
@@ -80,6 +79,7 @@ export const login = async (req, res) => {
 			following: user.following,
 			profileImg: user.profileImg,
 			coverImg: user.coverImg,
+			token: req.cookies.jwt,
 		});
 	} catch (error) {
 		console.log("Error in login controller", error.message);
