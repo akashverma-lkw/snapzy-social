@@ -1,12 +1,12 @@
 import Post from "./Post";
 import PostSkeleton from "../skeletons/PostSkeleton";
 import { useQuery } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { useMemo } from "react";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 const Posts = ({ feedType, username, userId }) => {
-	const getPostEndpoint = () => {
+	const POST_ENDPOINT = useMemo(() => {
 		switch (feedType) {
 			case "forYou":
 				return `${API_URL}/api/posts/all`;
@@ -19,39 +19,34 @@ const Posts = ({ feedType, username, userId }) => {
 			default:
 				return `${API_URL}/api/posts/all`;
 		}
-	};
-
-	const POST_ENDPOINT = getPostEndpoint();
+	}, [feedType, username, userId]);
 
 	const {
 		data: posts,
 		isLoading,
 		refetch,
 		isRefetching,
+		error,
 	} = useQuery({
 		queryKey: ["posts", feedType, username, userId],
 		queryFn: async () => {
-			try {
-				const res = await fetch(POST_ENDPOINT, {
-					method: "GET",
-					credentials: "include",
-				});
-				const data = await res.json();
+			const res = await fetch(POST_ENDPOINT, {
+				method: "GET",
+				credentials: "include",
+			});
+			const data = await res.json();
 
-				if (!res.ok) {
-					throw new Error(data.error || "Something went wrong");
-				}
-
-				return data;
-			} catch (error) {
-				throw new Error(error);
+			if (!res.ok) {
+				throw new Error(data.error || "Something went wrong");
 			}
+
+			return data;
 		},
 	});
 
-	useEffect(() => {
-		refetch();
-	}, [feedType, refetch, username]);
+	if (error) {
+		return <p className="text-center my-4 text-red-500">Error: {error.message}</p>;
+	}
 
 	return (
 		<>
@@ -62,9 +57,11 @@ const Posts = ({ feedType, username, userId }) => {
 					<PostSkeleton />
 				</div>
 			)}
+
 			{!isLoading && !isRefetching && posts?.length === 0 && (
 				<p className='text-center my-4'>No posts in this tab. Switch 👻</p>
 			)}
+
 			{!isLoading && !isRefetching && posts && (
 				<div>
 					{posts.map((post) => (
@@ -75,4 +72,5 @@ const Posts = ({ feedType, username, userId }) => {
 		</>
 	);
 };
+
 export default Posts;
