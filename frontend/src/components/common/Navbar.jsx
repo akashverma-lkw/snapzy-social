@@ -13,7 +13,7 @@ import { RxHamburgerMenu } from "react-icons/rx";
 
 import AiAskModal from "../../pages/AI Ask/AiAsk";
 
-const API_URL = import.meta.env.VITE_API_URL || "https://snapzy-backend.onrender.com";
+const API_URL = import.meta.env.VITE_API_URL;
 
 const Navbar = () => {
   const [isAiModalOpen, setIsAiModalOpen] = useState(false);
