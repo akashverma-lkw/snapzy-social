@@ -65,7 +65,7 @@ app.use("/api/notifications", notificationRoutes);
 
 // 7️⃣ Serve Frontend (optional, for production)
 if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "public")));
+  app.use(express.static(path.join(__dirname, "frontend/dist")));
 
   app.get("*", (req, res) => {
     res.sendFile(path.join(__dirname, "Frontend", "dist", "index.html"));

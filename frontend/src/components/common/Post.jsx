@@ -11,7 +11,7 @@ import { toast } from "react-hot-toast";
 import LoadingSpinner from "./LoadingSpinner";
 import { formatPostDate } from "../../utils/date";
 
-const API_URL = import.meta.env.VITE_API_URL || "https://snapzy-backend.onrender.com";
+const API_URL = import.meta.env.VITE_API_URL;
 
 const Post = ({ post }) => {
 	const [comment, setComment] = useState("");
