@@ -42,7 +42,7 @@ const Navbar = () => {
       }
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["authUser"] });
+      queryClient.setQueryData(["authUser"], null); // directly sets it to null
       navigate("/");
     },
     onError: () => {

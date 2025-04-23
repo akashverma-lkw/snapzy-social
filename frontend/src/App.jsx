@@ -38,6 +38,7 @@ function App() {
                 throw new Error(error);
             }
         },
+        staleTime: 0, // always fresh
         retry: false,
     });
 
