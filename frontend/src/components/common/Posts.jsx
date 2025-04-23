@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 
 const API_URL = import.meta.env.VITE_API_URL;
+console.log(API_URL);
 
 const Posts = ({ feedType, username, userId }) => {
 	const getPostEndpoint = () => {
