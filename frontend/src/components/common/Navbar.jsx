@@ -33,6 +33,7 @@ const Navbar = () => {
         
         const data = await res.json();
         if (!res.ok) throw new Error(data.error || "Something went wrong");
+        
         // Properly clear cookie on logout
         document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; secure; SameSite=None";
         return "Logout successful";
