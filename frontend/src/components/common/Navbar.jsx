@@ -20,7 +20,6 @@ const Navbar = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-  // ✅ Logout mutation
   const { mutate: logout } = useMutation({
     mutationFn: async () => {
       const res = await fetch(`${API_URL}/api/auth/logout`, {

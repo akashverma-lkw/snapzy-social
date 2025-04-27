@@ -75,7 +75,7 @@ export const login = async (req, res) => {
 		}
 
 		// Generate JWT token & set cookie
-		generateTokenAndSetCookie(user._id, res);
+		const token = generateTokenAndSetCookie(user._id, res);
 
 		// ✅ Wrap user data inside { user: ... } for frontend compatibility
 		res.status(200).json({
@@ -89,6 +89,7 @@ export const login = async (req, res) => {
 				following: user.following,
 				profileImg: user.profileImg,
 				coverImg: user.coverImg,
+				token,
 			},
 		});
 	} catch (error) {
