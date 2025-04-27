@@ -32,6 +32,10 @@ const LoginPage = () => {
       if (!res.ok) {
         throw new Error(data.error || "Invalid username or password");
       }
+
+      // Save user info and token to localStorage
+      localStorage.setItem('userInfo', JSON.stringify(data));
+      
       return data;
     },
     onSuccess: (data) => {
