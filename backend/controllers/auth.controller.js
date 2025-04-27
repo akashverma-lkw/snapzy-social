@@ -79,7 +79,7 @@ export const login = async (req, res) => {
 			following: user.following,
 			profileImg: user.profileImg,
 			coverImg: user.coverImg,
-			token,
+			token: token,
 		});
 		
 	} catch (error) {
