@@ -35,6 +35,7 @@ const LoginPage = () => {
 
       // Save user info and token to localStorage
       localStorage.setItem('userInfo', JSON.stringify(data));
+      window.location.reload(); // 👉 Page refresh
 
       return data;
     },

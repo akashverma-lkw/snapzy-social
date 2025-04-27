@@ -50,7 +50,7 @@ const Navbar = () => {
       queryClient.removeQueries(["authUser"]);
       queryClient.removeQueries(["user"]);
       navigate("/");
-      window.location.reload(); // 👉 Page ko refresh kar de
+      window.location.reload(); // 👉 Page refresh
     },
     onError: () => {
       toast.error("Logout failed");
