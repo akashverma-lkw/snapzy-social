@@ -80,7 +80,6 @@ export const login = async (req, res) => {
 		// ✅ Wrap user data inside { user: ... } for frontend compatibility
 		res.status(200).json({
 			user: {
-				token: req.cookies.jwt,
 				_id: user._id,
 				fullName: user.fullName,
 				username: user.username,
