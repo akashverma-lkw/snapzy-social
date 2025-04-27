@@ -61,29 +61,38 @@ export const signup = async (req, res) => {
 export const login = async (req, res) => {
 	try {
 		const { username, password } = req.body;
+		
+		// Check if user exists first
 		const user = await User.findOne({ username });
-		const isPasswordCorrect = await bcrypt.compare(password, user?.password || "");
-
-		if (!user || !isPasswordCorrect) {
+		if (!user) {
 			return res.status(400).json({ error: "Invalid username or password" });
 		}
 
-		const token = generateTokenAndSetCookie(user._id, res);
+		// Compare passwords securely
+		const isPasswordCorrect = await bcrypt.compare(password, user.password);
+		if (!isPasswordCorrect) {
+			return res.status(400).json({ error: "Invalid username or password" });
+		}
 
+		// Generate JWT token & set cookie
+		generateTokenAndSetCookie(user._id, res);
+
+		// ✅ Wrap user data inside { user: ... } for frontend compatibility
 		res.status(200).json({
-			_id: user._id,
-			fullName: user.fullName,
-			username: user.username,
-			email: user.email,
-			followers: user.followers,
-			following: user.following,
-			profileImg: user.profileImg,
-			coverImg: user.coverImg,
-			token,
+			user: {
+				token: req.cookies.jwt,
+				_id: user._id,
+				fullName: user.fullName,
+				username: user.username,
+				email: user.email,
+				followers: user.followers,
+				following: user.following,
+				profileImg: user.profileImg,
+				coverImg: user.coverImg,
+			},
 		});
-		
 	} catch (error) {
-		console.log("Error in login controller", error.message);
+		console.log("Error in login controller:", error.message);
 		res.status(500).json({ error: "Internal Server Error" });
 	}
 };

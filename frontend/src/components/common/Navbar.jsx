@@ -20,20 +20,6 @@ const Navbar = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-  // ✅ Fetch authenticated user data securely from backend
-  const { data: authUser, isLoading } = useQuery({
-    queryKey: ["authUser"],
-    queryFn: async () => {
-      const res = await fetch(`${API_URL}/api/auth/me`, {
-        credentials: "include",
-      });
-
-      if (!res.ok) throw new Error("Not authenticated");
-      return res.json();
-    },
-    retry: false,
-  });
-
   // ✅ Logout mutation
   const { mutate: logout } = useMutation({
     mutationFn: async () => {
