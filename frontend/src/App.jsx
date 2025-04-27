@@ -1,6 +1,8 @@
 import { Navigate, Route, Routes, Link } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 
+import ProtectedRoute from "./components/common/ProtectedRoute";
+
 import HomePage from "./pages/home/HomePage";
 import LoginPage from "./pages/auth/login/LoginPage";
 import SignUpPage from "./pages/auth/signup/SignUpPage";
@@ -55,14 +57,32 @@ function App() {
             {authUser && <Navbar />}
             {authUser && <LeftPanel />}
             <HelmetProvider>
-            <Routes>
-                <Route path='/' element={<FrontPage />} />
-                <Route path='/homepage' element={<HomePage />} />
-                <Route path='/login' element={!authUser ? <LoginPage /> : <Navigate to='/homepage' />} />
-                <Route path='/signup' element={!authUser ? <SignUpPage /> : <Navigate to='/' />} />
-                <Route path='/notifications' element={authUser ? <NotificationPage /> : <Navigate to='/login' />} />
-                <Route path='/profile/:username' element={authUser ? <ProfilePage /> : <Navigate to='/login' />} />
-            </Routes>
+                <Routes>
+                    <Route path='/' element={<FrontPage />} />
+                    <Route path='/homepage' element={
+                        <ProtectedRoute>
+                            <HomePage />
+                        </ProtectedRoute>
+                    } />
+                    <Route path='/login' element={!authUser ? <LoginPage /> : <Navigate to='/homepage' />} />
+                    <Route path='/signup' element={!authUser ? <SignUpPage /> : <Navigate to='/' />} />
+                    <Route path='/notifications' element={
+                        <ProtectedRoute>
+                            <NotificationPage />
+                        </ProtectedRoute>
+                    } />
+                    <Route path='/profile/:username' element={
+                        <ProtectedRoute>
+                            <ProfilePage />
+                        </ProtectedRoute>
+                    } />
+                    <Route path='/ai-ask' element={
+                        <ProtectedRoute>
+                            <AiAsk />
+                        </ProtectedRoute>
+                    } />
+                </Routes>
+
             </HelmetProvider>
             {authUser && <RightPanel />}
             <Toaster />
