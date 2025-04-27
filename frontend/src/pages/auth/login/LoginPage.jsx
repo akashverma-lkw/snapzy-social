@@ -38,9 +38,6 @@ const LoginPage = () => {
       console.log("Login Success ✅:", data);
       console.log("Token:", data.token);
       queryClient.invalidateQueries({ queryKey: ["authUser"] });
-      if (data.token) {
-        localStorage.setItem("authUser", JSON.stringify(data.token));
-      }
       navigate("/homepage");
     },
   });
