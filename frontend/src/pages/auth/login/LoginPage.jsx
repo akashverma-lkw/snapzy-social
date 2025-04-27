@@ -37,7 +37,8 @@ const LoginPage = () => {
     onSuccess: (data) => {
       console.log("Login Success ✅:", data);
       console.log("Token:", data.token);
-      queryClient.invalidateQueries({ queryKey: ["authUser"] });
+      queryClient.setQueryData(["user"], data.user);
+      queryClient.setQueryData(["token"], data.token);
       navigate("/homepage");
     },
   });
