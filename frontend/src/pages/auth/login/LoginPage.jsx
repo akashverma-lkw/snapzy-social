@@ -35,13 +35,15 @@ const LoginPage = () => {
 
       // Save user info and token to localStorage
       localStorage.setItem('userInfo', JSON.stringify(data));
-      
+
       return data;
     },
     onSuccess: (data) => {
       console.log("Login Success ✅:", data);
       console.log("Token:", data.token);
-      queryClient.invalidateQueries({ queryKey: ["authUser"] });
+
+      queryClient.setQueryData(["user"], data);
+      queryClient.setQueryData(["authUser"], data);
       navigate("/homepage");
     },
   });
