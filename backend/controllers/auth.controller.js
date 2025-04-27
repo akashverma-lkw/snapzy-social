@@ -59,9 +59,7 @@ export const signup = async (req, res) => {
 };
 
 export const login = async (req, res) => {
-
-	try {	
-		const {token} = req.cookies
+	try {
 		const { username, password } = req.body;
 		const user = await User.findOne({ username });
 		const isPasswordCorrect = await bcrypt.compare(password, user?.password || "");
@@ -70,7 +68,7 @@ export const login = async (req, res) => {
 			return res.status(400).json({ error: "Invalid username or password" });
 		}
 
-		generateTokenAndSetCookie(user._id, res);
+		const token = generateTokenAndSetCookie(user._id, res);
 
 		res.status(200).json({
 			_id: user._id,
