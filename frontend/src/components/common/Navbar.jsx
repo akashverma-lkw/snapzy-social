@@ -48,6 +48,7 @@ const Navbar = () => {
     },
     onSuccess: () => {
       queryClient.removeQueries(["authUser"]);
+      queryClient.removeQueries(["user"]);
       navigate("/");
     },
     onError: () => {
