@@ -16,28 +16,21 @@ import connectMongoDB from "./db/connectMongoDB.js";
 
 dotenv.config();
 
+const app = express(); // Initialize app first
 const __dirname = path.resolve();
-app.use(express.static(path.join(__dirname, "/frontend/dist"))); // or /build if using CRA
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "/frontend/dist/index.html"));
-});
-
-const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Trust proxy must be set before cookie-parser & CORS
 app.set("trust proxy", 1);
-
-// Middlewares (in correct order)
 
 app.use(express.json({ limit: "5mb" }));
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
-// CORS setup (before routes)
+// CORS setup
 app.use(
   cors({
     origin: process.env.FRONTEND_URL,
-    credentials: true, 
+    credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: [
       "Content-Type",
@@ -50,23 +43,28 @@ app.use(
   })
 );
 
-app.use(cookieParser());
-
-// Cloudinary Configuration
+// Cloudinary Config
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-// API Routes (after middlewares)
+// API Routes
 app.use("/api/ai", aiRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/notifications", notificationRoutes);
 
-// Connect to DB & Start Server
+// Serve frontend after routes
+app.use(express.static(path.join(__dirname, "/frontend/dist")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "/frontend/dist/index.html"));
+});
+
+// DB connection & start server
 connectMongoDB()
   .then(() => {
     app.listen(PORT, () => {
