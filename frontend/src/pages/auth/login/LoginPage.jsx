@@ -29,19 +29,17 @@ const LoginPage = () => {
       });
 
       const data = await res.json();
+      // Save user info and token to localStorage
+      localStorage.setItem('userInfo', JSON.stringify(data));
+
       if (!res.ok) {
         throw new Error(data.error || "Invalid username or password");
       }
-      // Save user info and token to localStorage
-      localStorage.setItem('userInfo', JSON.stringify(data));
       return data;
     },
-    onSuccess: (data) => {
-      console.log("Login Success ✅:", data);
-      console.log("Token:", data.token);
 
-      queryClient.setQueryData(["user"], data);
-      queryClient.setQueryData(["authUser"], data);
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["authUser"] });
       navigate("/homepage");
     },
   });
