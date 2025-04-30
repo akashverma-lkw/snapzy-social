@@ -37,9 +37,13 @@ const LoginPage = () => {
       }
       return data;
     },
-
+    
     onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ["authUser"] });
+      console.log("Login Success ✅:", data);
+      console.log("Token:", data.token);
+
+      queryClient.setQueryData(["user"], data);
+      queryClient.setQueryData(["authUser"], data);
       navigate("/homepage");
     },
   });
