@@ -16,8 +16,11 @@ import connectMongoDB from "./db/connectMongoDB.js";
 
 dotenv.config();
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const __dirname = path.resolve();
+app.use(express.static(path.join(__dirname, "/frontend/dist"))); // or /build if using CRA
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "/frontend/dist/index.html"));
+});
 
 const app = express();
 const PORT = process.env.PORT || 5000;
