@@ -29,16 +29,31 @@ const LoginPage = () => {
       });
 
       const data = await res.json();
-
       if (!res.ok) {
         throw new Error(data.error || "Invalid username or password");
       }
 
-      // ✅ Fix: Directly storing user data instead of `data.user`
-      localStorage.setItem("authUser", JSON.stringify(data));
+      // Structure userInfo properly
+      const userInfo = {
+        user: {
+          _id: data._id,
+          username: data.username,
+          email: data.email,
+        },
+        token: data.token,
+      };
+
+      // Save structured userInfo to localStorage
+      localStorage.setItem("userInfo", JSON.stringify(userInfo));
+      return userInfo;
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["authUser"] });
+    onSuccess: (userInfo) => {
+      console.log("Login Success ✅:", userInfo);
+      console.log("Token:", userInfo.token);
+
+      queryClient.setQueryData(["user"], userInfo);
+      queryClient.setQueryData(["authUser"], userInfo);
+      navigate("/homepage");
     },
   });
 
