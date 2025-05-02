@@ -32,27 +32,16 @@ const LoginPage = () => {
       if (!res.ok) {
         throw new Error(data.error || "Invalid username or password");
       }
-
-      // Structure userInfo properly
-      const userInfo = {
-        user: {
-          _id: data._id,
-          username: data.username,
-          email: data.email,
-        },
-        token: data.token,
-      };
-
-      // Save structured userInfo to localStorage
-      localStorage.setItem("userInfo", JSON.stringify(userInfo));
-      return userInfo;
+      // Save user info and token to localStorage
+      localStorage.setItem('userInfo', JSON.stringify(data));
+      return data;
     },
-    onSuccess: (userInfo) => {
-      console.log("Login Success ✅:", userInfo);
-      console.log("Token:", userInfo.token);
+    onSuccess: (data) => {
+      console.log("Login Success ✅:", data);
+      console.log("Token:", data.token);
 
-      queryClient.setQueryData(["user"], userInfo);
-      queryClient.setQueryData(["authUser"], userInfo);
+      queryClient.setQueryData(["user"], data);
+      queryClient.setQueryData(["authUser"], data);
       navigate("/homepage");
     },
   });
