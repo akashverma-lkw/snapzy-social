@@ -4,21 +4,20 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 
 const API_URL = import.meta.env.VITE_API_URL;
-console.log(API_URL);
 
 const Posts = ({ feedType, username, userId }) => {
 	const getPostEndpoint = () => {
 		switch (feedType) {
 			case "forYou":
-				return `${API_URL}/api/posts/all`;
+				return `/api/posts/all`;
 			case "following":
-				return `${API_URL}/api/posts/following`;
+				return `/api/posts/following`;
 			case "posts":
-				return `${API_URL}/api/posts/user/${username}`;
+				return `/api/posts/user/${username}`;
 			case "likes":
-				return `${API_URL}/api/posts/likes/${userId}`;
+				return `/api/posts/likes/${userId}`;
 			default:
-				return `${API_URL}/api/posts/all`;
+				return `/api/posts/all`;
 		}
 	};
 
