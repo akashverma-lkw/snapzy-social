@@ -40,7 +40,7 @@ const LoginPage = () => {
       console.log("Login Success ✅:", data);
       console.log("Token:", data.token);
 
-      queryClient.setQueryData(["user"], data);
+      queryClient.setQueryData(["token"], data);
       queryClient.setQueryData(["authUser"], data);
       navigate("/homepage");
     },
